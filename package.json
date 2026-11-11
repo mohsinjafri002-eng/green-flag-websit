@@ -1,0 +1,22 @@
+{
+  "name": "green-flag-rating",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A romantic, responsive green-flag rating website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "netlify:dev": "netlify dev"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "@netlify/blobs": "^8.1.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.0.0"
+  }
+}
