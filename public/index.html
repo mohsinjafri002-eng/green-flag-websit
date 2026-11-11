@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101c18">
+  <meta name="description" content="A very official, extremely scientific green-flag evaluation.">
+  <title>The Green Flag Report 💚</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Green Flag home"><span class="brand-mark">✳</span> THE GREEN FLAG REPORT</a>
+    <span class="top-note"><span class="live-dot"></span> AN EXTREMELY IMPORTANT REVIEW</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span></span> CONFIDENTIAL • FOR YOUR EYES ONLY <span></span></div>
+      <div class="hero-icon">✿</div>
+      <p class="overline">A LITTLE QUESTION FOR YOU</p>
+      <h1>So… how much of a<br><em>green flag</em> am I?</h1>
+      <p class="intro">An unbiased, totally professional evaluation of yours truly.<br class="desktop"> Your opinion is the only one that matters here.</p>
+      <div class="scroll-cue"><span></span> THE FLOOR IS YOURS</div>
+    </section>
+
+    <section class="review-card" id="review">
+      <div class="card-head">
+        <div><p class="section-kicker">01 / THE VERDICT</p><h2>Give me a rating.</h2></div>
+        <div class="stamp">100%<br><small>YOUR CALL</small></div>
+      </div>
+      <p class="muted">On a scale of 1 to 10, how green is this flag?</p>
+      <div class="rating-wrap">
+        <div class="rating-display"><span id="scoreNumber">—</span><small>/ 10</small></div>
+        <div class="rating-label" id="ratingLabel">Choose your verdict below</div>
+        <div class="score-grid" role="group" aria-label="Choose a rating from 1 to 10">
+          <button type="button" data-score="1">1</button><button type="button" data-score="2">2</button>
+          <button type="button" data-score="3">3</button><button type="button" data-score="4">4</button>
+          <button type="button" data-score="5">5</button><button type="button" data-score="6">6</button>
+          <button type="button" data-score="7">7</button><button type="button" data-score="8">8</button>
+          <button type="button" data-score="9">9</button><button type="button" data-score="10">10</button>
+        </div>
+        <div class="scale-ends"><span>Needs a software update</span><span>Certified green flag ✦</span></div>
+      </div>
+
+      <div class="divider"><span>✦</span></div>
+      <div class="section-kicker">02 / THE EVIDENCE</div>
+      <h2 class="subheading">What earned me those points?</h2>
+      <p class="muted">Pick as many as you think apply. No pressure. (Okay, tiny pressure.)</p>
+      <div class="traits">
+        <label class="trait"><input type="checkbox" value="Makes me smile"><span class="trait-icon">☺</span><span>Makes me smile</span><i>+</i></label>
+        <label class="trait"><input type="checkbox" value="Actually listens"><span class="trait-icon">♡</span><span>Actually listens</span><i>+</i></label>
+        <label class="trait"><input type="checkbox" value="Remembers the little things"><span class="trait-icon">✧</span><span>Remembers the little things</span><i>+</i></label>
+        <label class="trait"><input type="checkbox" value="Makes me feel safe and respected"><span class="trait-icon">❀</span><span>Makes me feel safe & respected</span><i>+</i></label>
+        <label class="trait"><input type="checkbox" value="Has elite-level humour"><span class="trait-icon">☻</span><span>Elite-level humour</span><i>+</i></label>
+        <label class="trait"><input type="checkbox" value="Needs improvement but is trying"><span class="trait-icon">↗</span><span>Trying to be better</span><i>+</i></label>
+      </div>
+
+      <div class="divider"><span>✦</span></div>
+      <div class="section-kicker">03 / THE FINAL WORD</div>
+      <h2 class="subheading">Leave your honest review.</h2>
+      <p class="muted">A compliment, a roast, a suggestion… I'll accept the official report.</p>
+      <div class="field-row">
+        <label class="field-label" for="name">YOUR NAME <span>(optional)</span></label>
+        <input id="name" maxlength="40" placeholder="The very important reviewer">
+      </div>
+      <div class="field-row">
+        <label class="field-label" for="note">YOUR REVIEW</label>
+        <textarea id="note" maxlength="700" rows="4" placeholder="Dear green flag candidate…"></textarea>
+        <div class="char-count"><span id="count">0</span>/700</div>
+      </div>
+      <button class="submit-btn" id="submitBtn" type="button"><span>Submit my official verdict</span><b>↗</b></button>
+      <p class="privacy-note"><span>♡</span> Your review is sent privately to the website owner.</p>
+      <div class="success" id="success" role="status" aria-live="polite">
+        <div class="success-icon">✓</div><h3>Verdict received.</h3>
+        <p>Your review has been delivered. The candidate is now waiting very nervously for the results.</p>
+      </div>
+      <p class="error" id="error" role="alert"></p>
+    </section>
+
+    <section class="closing">
+      <div class="closing-flower">✿</div>
+      <p class="section-kicker">A SMALL DISCLAIMER</p>
+      <h2>Whatever the score,<br><em>you still get the final say.</em></h2>
+      <p>Made with a little courage, a lot of affection,<br>and absolutely no professional qualifications.</p>
+      <div class="signature">— YOUR GREEN FLAG CANDIDATE <span>♡</span></div>
+    </section>
+  </main>
+  <footer><span>THE GREEN FLAG REPORT</span><span>MADE WITH ♡, JUST FOR YOU</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

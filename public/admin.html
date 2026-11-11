@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#101c18">
+  <title>Owner's Green Flag Inbox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .admin-wrap{width:min(100% - 36px,760px);margin:70px auto}
+    .admin-card{background:linear-gradient(145deg,rgba(29,48,40,.97),rgba(20,34,28,.98));border:1px solid rgba(196,231,204,.18);padding:clamp(22px,5vw,42px);border-radius:5px}
+    .admin-card h1{font:500 clamp(34px,6vw,48px) "Playfair Display";margin:0 0 10px}
+    .admin-card h1 em{color:var(--mint)}
+    .admin-sub{color:var(--muted);font-size:12px;line-height:1.7}
+    .login{display:flex;gap:10px;margin-top:24px}
+    .login input{flex:1;min-width:0}
+    .login button,.refresh{background:var(--mint);color:#13231a;border:0;padding:0 18px;border-radius:3px;font:700 11px "DM Sans";cursor:pointer}
+    .message{font-size:12px;color:#ffb5a8;margin-top:12px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:30px 0 16px}
+    .toolbar h2{font:500 27px "Playfair Display";margin:0}
+    .refresh{padding:11px 15px}
+    .summary{display:flex;gap:12px;margin:18px 0}
+    .stat{flex:1;background:#101d18;border:1px solid var(--line);padding:15px}
+    .stat strong{display:block;font:500 28px "Playfair Display";color:var(--mint)}
+    .stat span{font-size:9px;color:var(--muted);letter-spacing:.1em}
+    .rating-item{border:1px solid var(--line);background:#101d18;padding:19px;margin-top:11px;border-radius:3px}
+    .rating-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .rating-score{font:500 32px "Playfair Display";color:var(--mint)}
+    .rating-date{font-size:9px;color:#82958a}
+    .rating-name{font-size:12px;color:#e7eee8;margin:9px 0}
+    .rating-note{font-size:12px;line-height:1.7;color:var(--muted);white-space:pre-wrap}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .chip{font-size:9px;color:var(--mint);border:1px solid #9ed6ae44;padding:5px 8px;border-radius:20px}
+    .empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);font-size:12px}
+    .hidden{display:none!important}
+    @media(max-width:520px){.login{flex-direction:column}.login button{padding:14px}.toolbar h2{font-size:23px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">✳</span> THE GREEN FLAG REPORT</a><span class="top-note">PRIVATE OWNER INBOX</span></header>
+  <main class="admin-wrap">
+    <section class="admin-card">
+      <p class="section-kicker">OWNER ACCESS / PRIVATE</p>
+      <h1>Your <em>verdict</em> inbox.</h1>
+      <p class="admin-sub">Only the person with your private admin key can view submitted ratings. Enter your key to unlock the reviews.</p>
+      <div class="login" id="login">
+        <input id="key" type="password" autocomplete="current-password" placeholder="Enter your private admin key" aria-label="Private admin key">
+        <button id="unlock">Unlock inbox ↗</button>
+      </div>
+      <p class="message" id="message" role="alert"></p>
+      <section id="dashboard" class="hidden">
+        <div class="toolbar"><h2>Her official verdicts</h2><button class="refresh" id="refresh">Refresh ↻</button></div>
+        <div class="summary">
+          <div class="stat"><strong id="total">0</strong><span>REVIEWS RECEIVED</span></div>
+          <div class="stat"><strong id="average">—</strong><span>AVERAGE SCORE</span></div>
+        </div>
+        <div id="reviews"></div>
+      </section>
+    </section>
+  </main>
+  <script>
+    const keyInput = document.getElementById("key");
+    const login = document.getElementById("login");
+    const dashboard = document.getElementById("dashboard");
+    const message = document.getElementById("message");
+    const reviews = document.getElementById("reviews");
+    let adminKey = "";
+
+    function el(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    async function loadRatings() {
+      message.textContent = "";
+      const response = await fetch("/.netlify/functions/ratings", {
+        headers: { "x-admin-key": adminKey },
+        cache: "no-store"
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not load reviews.");
+      const list = data.ratings || [];
+      document.getElementById("total").textContent = list.length;
+      document.getElementById("average").textContent = list.length
+        ? (list.reduce((sum, item) => sum + item.score, 0) / list.length).toFixed(1) + "/10"
+        : "—";
+      reviews.replaceChildren();
+      if (!list.length) {
+        reviews.append(el("div", "empty", "No reviews yet. Send her the website link and check back later. 💚"));
+        return;
+      }
+      list.forEach(item => {
+        const card = el("article", "rating-item");
+        const top = el("div", "rating-top");
+        top.append(el("div", "rating-score", item.score + "/10"));
+        top.append(el("div", "rating-date", item.createdAt ? new Date(item.createdAt).toLocaleString() : ""));
+        card.append(top);
+        if (item.name) card.append(el("div", "rating-name", "From: " + item.name));
+        if (item.note) card.append(el("p", "rating-note", item.note));
+        if (item.reasons && item.reasons.length) {
+          const chips = el("div", "chips");
+          item.reasons.forEach(reason => chips.append(el("span", "chip", reason)));
+          card.append(chips);
+        }
+        reviews.append(card);
+      });
+    }
+
+    async function unlock() {
+      adminKey = keyInput.value.trim();
+      if (!adminKey) { message.textContent = "Enter your admin key first."; return; }
+      try {
+        await loadRatings();
+        login.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+      } catch (error) {
+        adminKey = "";
+        message.textContent = "Access denied or inbox unavailable. Check your key and try again.";
+      }
+    }
+    document.getElementById("unlock").addEventListener("click", unlock);
+    keyInput.addEventListener("keydown", event => { if (event.key === "Enter") unlock(); });
+    document.getElementById("refresh").addEventListener("click", async () => {
+      try { await loadRatings(); } catch { message.textContent = "Couldn't refresh. Please unlock again."; }
+    });
+  </script>
+</body>
+</html>
